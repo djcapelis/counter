@@ -1,1 +1,13 @@
 Counter is a small process which counts upwards at a programmable interval.  It can also be asked to allocate a block of memory of varying size and write alternating zeros and ones (0x55 or ASCII: 'U') across the memory range before beginning its count.  This particular program was used in the debugging of memsnap.  It may also be useful in a quick test for other types of debuggers and tracers.
+
+In its own words:
+$ counter -h
+Usage: counter (-t <sec> || -m <ms> || -u <us>) -f <final>
+        -h Print usage
+        -s <sec> Specify time interval in seconds
+        -m <ms> Specify time interval in milliseconds
+        -u <us> Specify time interval in microseconds
+        -G <GBs> Number of gigabytes of memory to allocate
+        -M <MGs> Number of megabytes of memory to allocate
+        -K <KBs> Nunber of kilobytes of memory to allocate
+        -f <final> Final count
