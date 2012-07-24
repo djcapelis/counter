@@ -142,7 +142,7 @@ int main(int argc, char * argv[])
         memset(mem, 'U', memsize*1024);
     }
 
-    // Call the handler to set up the signal handling and post to the sem for the first time
+    // Call the handler to set up the signal handling and start counting
     alrm_hdlr(0);
 
     sem_t sem;
