@@ -3,6 +3,7 @@
 #include<stdbool.h>
 #include<limits.h>
 #include<getopt.h>
+#include<semaphore.h>
 
 #include<sys/wait.h>
 #define __USE_POSIX199309
@@ -144,8 +145,10 @@ int main(int argc, char * argv[])
     // Call the handler to set up the signal handling and post to the sem for the first time
     alrm_hdlr(0);
 
+    sem_t sem;
+    sem_init(&sem, 0, 0);
     while(1)
-        wait(NULL);
+       sem_wait(&sem); // Wait forever.
 }
 
 void alrm_hdlr(int __attribute__((unused)) useless)
