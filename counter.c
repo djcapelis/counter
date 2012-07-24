@@ -37,7 +37,7 @@ int memsize;
 
 void print_usage()
 {
-    fprintf(stderr, "Usage: counter (-t <sec> || -m <ms> || -u <us>) -f <final>\n");
+    fprintf(stderr, "Usage: counter <options>\n");
     fprintf(stderr, "\t-h Print usage\n");
     fprintf(stderr, "\t-s <sec> Specify time interval in seconds\n");
     fprintf(stderr, "\t-m <ms> Specify time interval in milliseconds\n");
