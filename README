@@ -2,7 +2,7 @@ Counter is a small process which counts upwards at a programmable interval.  It 
 
 In its own words:
 $ counter -h
-Usage: counter (-t <sec> || -m <ms> || -u <us>) -f <final>
+Usage: counter <options>
         -h Print usage
         -s <sec> Specify time interval in seconds
         -m <ms> Specify time interval in milliseconds
