@@ -8,6 +8,8 @@
 #define __USE_POSIX199309
 #include<time.h>
 
+#include<string.h>
+
 void print_usage();
 void alrm_hdlr(int useless);
 void err_msg(char * msg);
@@ -26,9 +28,11 @@ bool OPT_S = false;
 bool OPT_M = false;
 bool OPT_U = false;
 bool OPT_F = false;
+bool MEMOPTS = false;
 
 int count;
 int final;
+int memsize;
 
 void print_usage()
 {
@@ -37,6 +41,9 @@ void print_usage()
     fprintf(stderr, "\t-s <sec> Specify time interval in seconds\n");
     fprintf(stderr, "\t-m <ms> Specify time interval in milliseconds\n");
     fprintf(stderr, "\t-u <us> Specify time interval in microseconds\n");
+    fprintf(stderr, "\t-G <GBs> Number of gigabytes of memory to allocate\n");
+    fprintf(stderr, "\t-M <MGs> Number of megabytes of memory to allocate\n");
+    fprintf(stderr, "\t-K <KBs> Nunber of kilobytes of memory to allocate\n");
     fprintf(stderr, "\t-f <final> Final count\n");
 }
 
@@ -53,10 +60,26 @@ int main(int argc, char * argv[])
     char opt;
     char * strerr = NULL;
     long arg;
-    while((opt = getopt(argc, argv, "+hs:m:u:f:")) != -1)
+    while((opt = getopt(argc, argv, "+hs:m:u:f:G:M:K:")) != -1)
     {
         switch(opt)
         {
+            case 'G':
+            case 'M':
+            case 'K':
+                if(MEMOPTS)
+                    err_msg("Only one -G, -M or -K switch is allowed\n\n");
+                MEMOPTS = true;
+                arg = strtol(optarg, &strerr, 10);
+                if(arg < 0 || strerr[0] != 0)
+                    err_msg("Please enter a valid positive integer for the amount of memory to alloc\n\n");
+                memsize = arg;
+                if(opt == 'M')
+                    memsize *= 1024;
+                if(opt == 'G')
+                    memsize *= 1024 * 1024;
+                optarg = NULL;
+                break;
             case 's':
             case 'm':
             case 'u':
@@ -109,6 +132,13 @@ int main(int argc, char * argv[])
                 print_usage();
                 return 0;
         }
+    }
+
+    char * mem;
+    if(MEMOPTS)
+    {
+        mem = calloc(memsize, 1024);
+        memset(mem, 'U', memsize*1024);
     }
 
     // Call the handler to set up the signal handling and post to the sem for the first time
