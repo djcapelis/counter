@@ -43,7 +43,7 @@ void print_usage()
     fprintf(stderr, "\t-m <ms> Specify time interval in milliseconds\n");
     fprintf(stderr, "\t-u <us> Specify time interval in microseconds\n");
     fprintf(stderr, "\t-G <GBs> Number of gigabytes of memory to allocate\n");
-    fprintf(stderr, "\t-M <MGs> Number of megabytes of memory to allocate\n");
+    fprintf(stderr, "\t-M <MBs> Number of megabytes of memory to allocate\n");
     fprintf(stderr, "\t-K <KBs> Nunber of kilobytes of memory to allocate\n");
     fprintf(stderr, "\t-f <final> Final count\n");
 }

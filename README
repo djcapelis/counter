@@ -8,6 +8,6 @@ Usage: counter <options>
         -m <ms> Specify time interval in milliseconds
         -u <us> Specify time interval in microseconds
         -G <GBs> Number of gigabytes of memory to allocate
-        -M <MGs> Number of megabytes of memory to allocate
+        -M <MBs> Number of megabytes of memory to allocate
         -K <KBs> Nunber of kilobytes of memory to allocate
         -f <final> Final count
