@@ -11,6 +11,7 @@
 
 #include<string.h>
 
+/* Function definitions */
 void print_usage();
 void alrm_hdlr(int useless);
 void err_msg(char * msg);
@@ -19,9 +20,12 @@ void err_msg(char * msg);
 extern char * optarg;
 extern int optind;      /* Index to first non-arg parameter */
 
-/* More globals */
+/* Globals */
 timer_t timer;
 struct itimerspec t;
+int count;
+int final;
+int memsize;
 
 /* Options */
 bool OPT_H = false;
@@ -30,10 +34,6 @@ bool OPT_M = false;
 bool OPT_U = false;
 bool OPT_F = false;
 bool MEMOPTS = false;
-
-int count;
-int final;
-int memsize;
 
 void print_usage()
 {
