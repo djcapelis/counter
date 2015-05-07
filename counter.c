@@ -4,6 +4,7 @@
 #include<limits.h>
 #include<getopt.h>
 #include<semaphore.h>
+#include<errno.h>
 
 #include<sys/wait.h>
 #define __USE_POSIX199309
@@ -35,6 +36,9 @@ bool OPT_U = false;
 bool OPT_F = false;
 bool MEMOPTS = false;
 
+/* Error handler define */
+#define chk_err(cond) do { if(cond) { goto err; } } while(0)
+
 void print_usage()
 {
     fprintf(stderr, "Usage: counter <options>\n");
@@ -51,7 +55,7 @@ void print_usage()
 int main(int argc, char * argv[])
 {
     /* Timer setup */
-    timer_create(CLOCK_MONOTONIC, NULL, &timer);
+    chk_err(timer_create(CLOCK_MONOTONIC, NULL, &timer) == -1);
     t.it_value.tv_sec = 1;
     t.it_value.tv_nsec = 0;
     t.it_interval.tv_sec = 0;
@@ -139,6 +143,11 @@ int main(int argc, char * argv[])
     if(MEMOPTS)
     {
         mem = calloc(memsize, 1024);
+        if(mem == NULL)
+        {
+            fprintf(stderr, "Unable to allocate %lld bytes of memory.  Perhaps try a smaller size?\n", memsize * 1024);
+            exit(EXIT_FAILURE);
+        }
         memset(mem, 'U', memsize*1024);
     }
 
@@ -146,27 +155,37 @@ int main(int argc, char * argv[])
     alrm_hdlr(0);
 
     sem_t sem;
-    sem_init(&sem, 0, 0);
+    chk_err(sem_init(&sem, 0, 0) == -1);
     while(1)
        sem_wait(&sem); // Wait forever.
+
+err:
+    if(errno != 0)
+        perror("counter");
+    exit(EXIT_FAILURE);
 }
 
 void alrm_hdlr(int __attribute__((unused)) useless)
 {
-    signal(SIGALRM, &alrm_hdlr);
+    chk_err(signal(SIGALRM, &alrm_hdlr) == SIG_ERR);
 
     fprintf(stderr, "%d\n", count);
     count++;
     if(count == final)
-        exit(0);
+        exit(EXIT_SUCCESS);
 
-    timer_settime(timer, 0, &t, NULL);
+    chk_err(timer_settime(timer, 0, &t, NULL) == -1);
     return;
+
+err:
+    if(errno != 0)
+        perror("Error in counter signal handler");
+    exit(EXIT_FAILURE);
 }
 
 void err_msg(char * msg)
 {
     fprintf(stderr, msg);
     print_usage();
-    exit(-1);
+    exit(EXIT_FAILURE);
 }
