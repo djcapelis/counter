@@ -25,7 +25,7 @@ timer_t timer;
 struct itimerspec t;
 int count;
 int final;
-int memsize;
+unsigned long long memsize;
 
 /* Options */
 bool OPT_H = false;
@@ -71,7 +71,7 @@ int main(int argc, char * argv[])
                 if(MEMOPTS)
                     err_msg("Only one -G, -M or -K switch is allowed\n\n");
                 MEMOPTS = true;
-                arg = strtol(optarg, &strerr, 10);
+                arg = strtoll(optarg, &strerr, 10);
                 if(arg < 0 || strerr[0] != 0)
                     err_msg("Please enter a valid positive integer for the amount of memory to alloc\n\n");
                 memsize = arg;
