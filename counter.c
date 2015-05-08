@@ -157,7 +157,7 @@ int main(int argc, char * argv[])
     sem_t sem;
     chk_err(sem_init(&sem, 0, 0) == -1);
     while(1)
-       sem_wait(&sem); // Wait forever.
+        sem_wait(&sem); // Wait forever.
 
 err:
     if(errno != 0)
